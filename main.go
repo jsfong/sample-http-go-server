@@ -70,6 +70,7 @@ func echoAndServeJSONFile(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/check_liveness", echoAndServeXMLFile)
+	// router.HandleFunc("/check_liveness", echoAndServeJSONFile)
 	// // router.HandleFunc("/event", createEvent).Methods("POST")
 	// // router.HandleFunc("/events", getAllEvents).Methods("GET")
 	// // router.HandleFunc("/events/{id}", getOneEvent).Methods("GET")

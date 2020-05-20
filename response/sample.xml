@@ -1,5 +1,8 @@
-<output>
-  <probability>0.99</probability>
-  <score>9.0</score>
-  <quality>1.0</quality>
-</output>
+<?xml version="1.0" encoding="UTF-8"?>
+<documentResult>
+	<result>
+    <probability>0.99</probability>
+    <score>9.0</score>
+    <quality>1.0</quality>
+	</result>
+</documentResult>
