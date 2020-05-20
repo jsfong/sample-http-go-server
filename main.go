@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -9,24 +10,66 @@ import (
 	"github.com/jsfong/sample-http-go-server/echoer"
 )
 
-func homeLink(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome home!")
-}
-
-func readAndPrintBody(w http.ResponseWriter, r *http.Request) {
+func echoGenericRequest(r *http.Request) {
 	bs := make([]byte, r.ContentLength)
 	r.Body.Read(bs)
 	body := string(bs)
 
 	header := r.Header
 
+	fmt.Println("-----Request START-------")
+	fmt.Println("Request: ", r)
+	fmt.Println("-----Request END-------")
+	fmt.Println()
+	fmt.Println("-----Header START-------")
 	fmt.Println("Request Header: ", header)
-	fmt.Println("Request Body: ", body)
+	fmt.Println("-----Header END-------")
+	fmt.Println()
+	fmt.Println("-----Body START-------")
+	fmt.Println("Body: ", body)
+	fmt.Println("-----Body END-------")
+	fmt.Println()
+	fmt.Println("----------------------------------------")
+
+}
+
+func echoAndServeXMLFile(w http.ResponseWriter, r *http.Request) {
+
+	echoer.EchoMultipart3(r)
+
+	filename := "response/sample.xml"
+	b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Fatalf("Unable to parse file %s", filename)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/xml")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, string(b))
+}
+
+func echoAndServeJSONFile(w http.ResponseWriter, r *http.Request) {
+
+	echoer.EchoMultipart3(r)
+
+	filename := "response/sample.json"
+	b, err := ioutil.ReadFile(filename)
+	if err != nil {
+		log.Fatalf("Unable to parse file %s", filename)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, string(b))
+
+	// w.Write([]byte("OK"))
 }
 
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/", echoer.EchoMultipart3)
+	router.HandleFunc("/check_liveness", echoAndServeXMLFile)
 	// // router.HandleFunc("/event", createEvent).Methods("POST")
 	// // router.HandleFunc("/events", getAllEvents).Methods("GET")
 	// // router.HandleFunc("/events/{id}", getOneEvent).Methods("GET")

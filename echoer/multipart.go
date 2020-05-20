@@ -8,20 +8,17 @@ import (
 	"net/http"
 )
 
+// GetValue is a testing function
 func GetValue() string {
 	return "Hello from this another package"
 }
 
-// Parse using parse multipart form
-func EchoParseMultipartForm(w http.ResponseWriter, r *http.Request) {
+// EchoParseMultipartForm is an multipart echoer using parse multipart form
+func EchoParseMultipartForm(r *http.Request) {
 
 	if err := r.ParseMultipartForm(32 << 20); err != nil { // maxMemory 32MB)
-		http.Error(w, fmt.Sprintf("Parse form: %v", err), http.StatusBadRequest)
+		fmt.Println("r.ParseMultipartForm() err,", err)
 		return
-	}
-
-	if r.MultipartForm == nil || r.MultipartForm.File == nil {
-		http.Error(w, "expecting multipart form file", http.StatusBadRequest)
 	}
 
 	fmt.Println("r.Form: ", r.Form)
@@ -29,8 +26,8 @@ func EchoParseMultipartForm(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("r.MultipartFrom: ", r.MultipartForm)
 }
 
-// Parse using multipart reader
-func EchoMultipartReader(w http.ResponseWriter, r *http.Request) {
+// EchoMultipartReader is an multipart echoer using multipart reader
+func EchoMultipartReader(r *http.Request) {
 	mr, err := r.MultipartReader()
 	if err != nil {
 		fmt.Println("r.MultipartReader() err,", err)
@@ -41,14 +38,16 @@ func EchoMultipartReader(w http.ResponseWriter, r *http.Request) {
 	getFormData(form)
 }
 
-// Parse using multipart reader next part
-func EchoMultipart3(w http.ResponseWriter, r *http.Request) {
+// EchoMultipart3 is an multipart echoer using multipart reader next part
+func EchoMultipart3(r *http.Request) {
 	mr, err := r.MultipartReader()
 	if err != nil {
 		fmt.Println("r.MultipartReader() err,", err)
 		return
 	}
 
+	fmt.Println()
+	fmt.Println("----------------------------------------")
 	for {
 		p, err := mr.NextPart()
 		if err == io.EOF {
@@ -70,10 +69,11 @@ func EchoMultipart3(w http.ResponseWriter, r *http.Request) {
 
 		if fileName != "" {
 			fileData, _ := ioutil.ReadAll(p)
-			fmt.Printf("File Name %s, File Data: %s \n", fileName, fileData)
+			fmt.Printf("File Name: %s, File Data: %s \n", fileName, fileData)
 		}
 
 		fmt.Println()
+		fmt.Println("----------------------------------------")
 	}
 }
 
