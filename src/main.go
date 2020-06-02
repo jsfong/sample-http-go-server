@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/jsfong/sample-http-go-server/echoer"
+	"github.com/jsfong/sample-http-go-server/pkg/echoer"
 )
 
 func echoGenericRequest(r *http.Request) {
@@ -37,7 +37,7 @@ func echoAndServeXMLFile(w http.ResponseWriter, r *http.Request) {
 
 	echoer.EchoMultipart3(r)
 
-	filename := "response/sample.xml"
+	filename := "pkg/response/sample.xml"
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Fatalf("Unable to parse file %s", filename)
@@ -53,7 +53,7 @@ func echoAndServeJSONFile(w http.ResponseWriter, r *http.Request) {
 
 	echoer.EchoMultipart3(r)
 
-	filename := "response/sample.json"
+	filename := "pkg/response/sample.json"
 	b, err := ioutil.ReadFile(filename)
 	if err != nil {
 		log.Fatalf("Unable to parse file %s", filename)

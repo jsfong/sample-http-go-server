@@ -1,0 +1,16 @@
+version: '3'
+
+networks:
+  scs:
+    driver: bridge
+
+services:
+  golang_server:
+    image: golang_server:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - scs
+    # volumes:
+    #   - ./pkg:/go/bin
+   
