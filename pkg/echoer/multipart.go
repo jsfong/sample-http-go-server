@@ -67,10 +67,10 @@ func EchoMultipart3(r *http.Request) {
 			fmt.Printf("Form Name: %s, Form Value: %s\n", formName, formValue)
 		}
 
-		// if fileName != "" {
-		// 	fileData, _ := ioutil.ReadAll(p)
-		// 	fmt.Printf("File Name: %s, File Data: %s \n", fileName, fileData)
-		// }
+		if fileName != "" {
+			fileData, _ := ioutil.ReadAll(p)
+			fmt.Printf("File Name: %s, File Data: %s \n", fileName, fileData)
+		}
 
 		fmt.Println()
 		fmt.Println("----------------------------------------")
